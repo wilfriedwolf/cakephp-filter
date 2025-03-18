@@ -703,8 +703,9 @@ class FilterComponent extends Component
      */
     protected function _extractPassParams(): void
     {
-        if (!empty($this->controller->filterPassParams[$this->action])) {
-            foreach ($this->controller->filterPassParams[$this->action] as $key) {
+        $filterPassParams = $this->request->getParam('pass');
+        if (!empty($filterPassParams[$this->action])) {
+            foreach ($filterPassParams[$this->action] as $key) {
                 if (!empty($this->request->getParam($key))) {
                     $this->_passParams[$key] = $this->request->getParam($key);
                 }

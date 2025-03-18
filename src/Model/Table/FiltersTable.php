@@ -30,7 +30,7 @@ class FiltersTable extends Table
     }
 
     /**
-     * Find a slug by the provided filter data ($options['filterData'].
+     * Find a slug by the provided request and filter data
      *
      * @param Query $query
      * @param array $options
@@ -38,17 +38,13 @@ class FiltersTable extends Table
      */
     public function findSlugForFilterData(Query $query, array $options): Query
     {
-        if (!isset($options['request']) || get_class($options['request']) !== ServerRequest::class) {
-            user_error('The request query option must exist and must be of type Cake\Http\ServerRequest.');
+        if (!empty($options['options'])) {
+            $request = $options['options']['request'];
+            $filterData = $options['options']['filterData'];
+        } else {
+            $request = $options['request'];
+            $filterData = $options['filterData'];
         }
-
-        if (!isset($options['filterData'])) {
-            user_error('No filterData option provided.');
-        }
-
-        /** @var ServerRequest $request */
-        $request = $options['request'];
-        $filterData = $options['filterData'];
 
         return $query
             ->select($this->getAlias() . '.slug')
