@@ -7,8 +7,4 @@ use Cake\Core\BasePlugin;
 
 class Plugin extends BasePlugin
 {
-    public function getName(): string
-    {
-        return 'Filter';
-    }
 }
