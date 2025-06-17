@@ -209,12 +209,13 @@ class FilterComponent extends Component
      * Called after the Controller::beforeFilter() and before the controller action.
      *
      * @param EventInterface $event
-     * @return bool
+     * @return void
      */
-    public function startup(EventInterface $event): bool
+    public function startup(EventInterface $event): void
     {
         if (!$this->_isFilterRequest()) {
-            return true;
+            $event->setResult(false);
+            return;
         }
 
         $this->_initFilterOptions();
@@ -229,10 +230,11 @@ class FilterComponent extends Component
             $url = $this->_applySort($url);
 
             $this->controller->redirect($url);
-            return false;
+            $event->setResult(false);
+            return;
         }
 
-        return true;
+        $event->setResult(true);
     }
 
     /**
@@ -333,12 +335,13 @@ class FilterComponent extends Component
      * - Can be later retrieved via FilterHelper::getBacklink($url)
      *
      * @param EventInterface $event
-     * @return bool
+     * @return void
      */
-    public function beforeRender(EventInterface $event): bool
+    public function beforeRender(EventInterface $event): void
     {
         if (!$this->controller || !$this->request || !$this->action) {
-            return true;
+            $event->setResult(true);
+            return;
         }
         $filterOptions = [];
 
@@ -399,7 +402,7 @@ class FilterComponent extends Component
             'passParams' => $this->_passParams
         ]);
 
-        return true;
+        $event->setResult(true);
     }
 
     /**
